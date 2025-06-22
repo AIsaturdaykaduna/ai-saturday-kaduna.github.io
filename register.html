@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join AI Saturdays Kaduna</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    :root {
+      --orange: #ff6600;
+      --dark-blue: #0d1b2a;
+      --light-bg: #f8f9fa;
+    }
+    body {
+      background-color: var(--light-bg);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .form-section {
+      max-width: 850px;
+      margin: 60px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      color: var(--dark-blue);
+      font-weight: bold;
+    }
+    .btn-orange {
+      background-color: var(--orange);
+      color: white;
+      font-weight: 600;
+    }
+    .btn-orange:hover {
+      background-color: #e65c00;
+    }
+    label.required::after {
+      content: "*";
+      color: red;
+      margin-left: 4px;
+    }
+    .profile-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 30px;
+    }
+    .profile-wrapper img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--orange);
+    }
+    .camera-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      margin: auto;
+      text-align: center;
+      width: 40px;
+      height: 40px;
+      background: var(--orange);
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .profile-wrapper input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container form-section">
+  <h1 class="mb-4 text-center">Join AI Saturdays Kaduna</h1>
+  <div class="profile-wrapper">
+    <img id="profilePreview" src="user.jpg" alt="Profile Picture">
+    <label for="profileInput" class="camera-icon">
+      <i class="bi bi-camera-fill"></i>
+      <input type="file" id="profileInput" accept="image/*">
+    </label>
+  </div>
+  <form id="registrationForm" novalidate>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label required" for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" required pattern="[A-Za-z\s]+" placeholder="Enter your first name">
+        <div class="invalid-feedback">Please enter a valid first name.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required" for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" required pattern="[A-Za-z\s]+" placeholder="Enter your last name">
+        <div class="invalid-feedback">Please enter a valid last name.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required" for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" required placeholder="you@example.com">
+        <div class="invalid-feedback">Enter a valid email address.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required" for="phone">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" required pattern="^\+?[0-9]{10,15}$" placeholder="+234xxxxxxxxxx">
+        <div class="invalid-feedback">Enter a valid phone number (10–15 digits).</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required">Do you have any knowledge of AI or tech skills?</label>
+        <select class="form-select" id="hasSkills" required>
+          <option value="">Select an option</option>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div class="invalid-feedback">Please select an option.</div>
+      </div>
+      <div class="col-md-6" id="skillLevelGroup" style="display: none;">
+        <label class="form-label required" for="skillLevel">If yes, what is your skill level?</label>
+        <select class="form-select" id="skillLevel">
+          <option value="">Select level</option>
+          <option>Beginner</option>
+          <option>Intermediate</option>
+          <option>Advanced</option>
+        </select>
+        <div class="invalid-feedback">Please select your skill level.</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label required" for="interest">Why are you interested in this program?</label>
+        <textarea class="form-control" id="interest" rows="3" required minlength="10" placeholder="Share your motivation..."></textarea>
+        <div class="invalid-feedback">Tell us why you’re interested (minimum 10 characters).</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required" for="hours">How many hours per week can you dedicate to learning?</label>
+        <input type="number" class="form-control" id="hours" required min="1" placeholder="e.g., 5">
+        <div class="invalid-feedback">Please enter a valid number of hours (1 or more).</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label required">Do you have access to a computer or laptop?</label>
+        <select class="form-select" id="hasComputer" required>
+          <option value="">Select an option</option>
+          <option>Yes</option>
+          <option>No</option>
+          <option>Sometimes</option>
+        </select>
+        <div class="invalid-feedback">Please select an option.</div>
+      </div>
+      <div class="col-12">
+        <label class="form-label required">Will you abide by the rules and guidelines of the program?</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rules" id="rulesYes" required>
+          <label class="form-check-label" for="rulesYes">Yes, I agree</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rules" id="rulesNo">
+          <label class="form-check-label" for="rulesNo">No</label>
+        </div>
+        <div class="invalid-feedback d-block" id="rulesFeedback">You must agree to follow the rules to join.</div>
+      </div>
+      <div class="col-12 mt-4 text-center">
+        <button type="submit" class="btn btn-orange btn-lg px-5">Submit Application</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const form = document.getElementById('registrationForm');
+  const hasSkills = document.getElementById('hasSkills');
+  const skillLevelGroup = document.getElementById('skillLevelGroup');
+  const skillLevel = document.getElementById('skillLevel');
+  const rulesYes = document.getElementById('rulesYes');
+  const rulesFeedback = document.getElementById('rulesFeedback');
+  const profileInput = document.getElementById('profileInput');
+  const profilePreview = document.getElementById('profilePreview');
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  hasSkills.addEventListener('change', () => {
+    skillLevelGroup.style.display = hasSkills.value === 'yes' ? 'block' : 'none';
+    if (hasSkills.value === 'yes') {
+      skillLevel.setAttribute('required', 'required');
+    } else {
+      skillLevel.removeAttribute('required');
+    }
+  });
+
+  profileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        profilePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  form.addEventListener('submit', async function (event) {
+    if (!form.checkValidity() || !rulesYes.checked) {
+      event.preventDefault();
+      event.stopPropagation();
+      rulesFeedback.style.display = !rulesYes.checked ? 'block' : 'none';
+    } else {
+      event.preventDefault();
+
+      const originalText = submitButton.innerHTML;
+      submitButton.innerHTML = 'Submitting... Please wait';
+      submitButton.disabled = true;
+
+      const formData = new FormData();
+      formData.append('firstName', firstName.value);
+      formData.append('lastName', lastName.value);
+      formData.append('email', email.value);
+      formData.append('phone', phone.value);
+      formData.append('hasSkills', hasSkills.value);
+      formData.append('skillLevel', skillLevel.value || '');
+      formData.append('interest', interest.value);
+      formData.append('hours', hours.value);
+      formData.append('hasComputer', hasComputer.value);
+      formData.append('rules', rulesYes.checked ? 'yes' : 'no');
+      if (profileInput.files[0]) {
+        formData.append('profilePicture', profileInput.files[0]);
+      }
+
+      try {
+        const res = await axios.post('https://riyawacontractors.com/AI-Saturdays/register.php', formData);
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: res.data.message || 'Application submitted successfully!',
+          confirmButtonColor: '#ff6600'
+        });
+
+        form.reset();
+        profilePreview.src = 'user.jpg';
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Submission Failed',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonColor: '#ff6600'
+        });
+      } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+      }
+    }
+    form.classList.add('was-validated');
+  });
+</script>    
+</body>
+</html>
