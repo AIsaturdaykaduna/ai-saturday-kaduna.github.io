@@ -45,25 +45,25 @@
 <body>
 <div class="container dashboard">
   <div class="text-center mb-4">
-    <img id="profilePicture" src="" alt="Profile" class="profile-img mb-3">
+    <img id="profilePicture" src="https://via.placeholder.com/120" alt="Profile" class="profile-img mb-3">
     <h2 id="fullName">Loading...</h2>
     <p id="email"></p>
   </div>
 
   <div class="row g-4">
     <div class="col-md-6">
-      <p><span class="info-label">Phone:</span> <span id="phone"></span></p>
-      <p><span class="info-label">Has Computer:</span> <span id="hasComputer"></span></p>
-      <p><span class="info-label">Rules Accepted:</span> <span id="rules"></span></p>
+      <p><span class="info-label">Phone:</span> <span id="phone">Loading...</span></p>
+      <p><span class="info-label">Has Computer:</span> <span id="hasComputer">Loading...</span></p>
+      <p><span class="info-label">Rules Accepted:</span> <span id="rules">Loading...</span></p>
     </div>
     <div class="col-md-6">
-      <p><span class="info-label">Has Skills:</span> <span id="hasSkills"></span></p>
-      <p><span class="info-label">Skill Level:</span> <span id="skillLevel"></span></p>
-      <p><span class="info-label">Learning Hours:</span> <span id="hours"></span></p>
+      <p><span class="info-label">Has Skills:</span> <span id="hasSkills">Loading...</span></p>
+      <p><span class="info-label">Skill Level:</span> <span id="skillLevel">Loading...</span></p>
+      <p><span class="info-label">Learning Hours:</span> <span id="hours">Loading...</span></p>
     </div>
     <div class="col-12">
       <p><span class="info-label">Interest:</span></p>
-      <p id="interest"></p>
+      <p id="interest">Loading...</p>
     </div>
   </div>
 
@@ -75,27 +75,33 @@
 <script>
   const userEmail = sessionStorage.getItem('userEmail');
   if (!userEmail) {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'login.html';
   }
 
   async function loadUserProfile() {
     try {
-      const res = await axios.post('https://riyawacontractors.com/AI-Saturdays/get-user.php', {
-        email: userEmail
-      });
+      const res = await axios.post(
+        'https://riyawacontractors.com/AI-Saturdays/get-user.php',
+        { email: userEmail },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
       if (res.data.status && res.data.user) {
         const user = res.data.user;
 
         document.getElementById('fullName').textContent = `${user.first_name} ${user.last_name}`;
         document.getElementById('email').textContent = user.email;
-        document.getElementById('phone').textContent = user.phone;
-        document.getElementById('hasComputer').textContent = user.has_computer;
-        document.getElementById('rules').textContent = user.rules;
-        document.getElementById('hasSkills').textContent = user.has_skills;
-        document.getElementById('skillLevel').textContent = user.skill_level;
-        document.getElementById('hours').textContent = user.hours;
-        document.getElementById('interest').textContent = user.interest;
+        document.getElementById('phone').textContent = user.phone || 'N/A';
+        document.getElementById('hasComputer').textContent = user.has_computer || 'N/A';
+        document.getElementById('rules').textContent = user.rules || 'N/A';
+        document.getElementById('hasSkills').textContent = user.has_skills || 'N/A';
+        document.getElementById('skillLevel').textContent = user.skill_level || 'N/A';
+        document.getElementById('hours').textContent = user.hours || 'N/A';
+        document.getElementById('interest').textContent = user.interest || 'N/A';
         document.getElementById('profilePicture').src = user.profile_picture || 'https://via.placeholder.com/120';
       } else {
         Swal.fire({
@@ -106,10 +112,11 @@
         }).then(() => window.location.href = 'login.html');
       }
     } catch (error) {
+      console.error("Axios error:", error);
       Swal.fire({
         icon: 'error',
         title: 'Network Error',
-        text: 'Could not load user info.',
+        text: 'Could not load user info. Please check your internet or try again later.',
         confirmButtonColor: '#ff6600'
       });
     }
