@@ -64,6 +64,8 @@
     } else {
       axios.post('https://riyawacontractors.com/AI-Saturdays/get-user.php', { email })
         .then(res => {
+          console.log("Full Response:", res); // Debugging output
+
           if (res.data.status) {
             const user = res.data.user;
             document.getElementById('firstName').textContent = user.first_name;
@@ -80,6 +82,7 @@
           }
         })
         .catch(err => {
+          console.error("Fetch Error:", err); // Debugging output
           Swal.fire({
             icon: 'error',
             title: 'Network Error',
