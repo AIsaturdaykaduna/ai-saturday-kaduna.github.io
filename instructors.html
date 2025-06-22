@@ -1,3 +1,4 @@
+<!-- START OF HTML FILE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -139,7 +140,7 @@
     axios.get('https://riyawacontractors.com/AI-Saturdays/instructors.php')
       .then(response => {
         const instructors = response.data;
-        container.innerHTML = ""; // Clear any placeholder content
+        container.innerHTML = "";
 
         instructors.forEach(instructor => {
           const fullName = `${instructor.first_name} ${instructor.last_name}`;
@@ -175,7 +176,6 @@
         container.innerHTML = '<p class="text-danger text-center">Failed to load instructors. Please try again later.</p>';
       })
       .finally(() => {
-        // Hide spinner
         spinner.style.display = "none";
       });
   });
