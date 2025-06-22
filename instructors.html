@@ -60,6 +60,9 @@
       color: #fff;
       padding: 20px 0;
     }
+    #loading-spinner {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -97,8 +100,16 @@
 <section class="py-5">
   <div class="container">
     <h2 class="section-title text-center">Core Leads</h2>
+
+    <!-- Spinner -->
+    <div id="loading-spinner" class="text-center my-5">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
     <div class="row g-4" id="instructors-container">
-      <!-- Instructors will be inserted here dynamically -->
+      <!-- Instructor cards inserted here -->
     </div>
   </div>
 </section>
@@ -120,10 +131,15 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById("instructors-container");
+    const spinner = document.getElementById("loading-spinner");
+
+    // Show spinner
+    spinner.style.display = "block";
 
     axios.get('https://riyawacontractors.com/AI-Saturdays/instructors.php')
       .then(response => {
         const instructors = response.data;
+        container.innerHTML = ""; // Clear any placeholder content
 
         instructors.forEach(instructor => {
           const fullName = `${instructor.first_name} ${instructor.last_name}`;
@@ -131,7 +147,9 @@
           const card = `
             <div class="col-md-4">
               <div class="card card-instructor">
-                <img src="${image}" alt="${fullName}">
+                <a href="${image}" target="_blank">
+                  <img src="${image}" alt="${fullName}">
+                </a>
                 <div class="card-body">
                   <h5>${fullName}</h5>
                   <p class="text-muted">Instructor</p>
@@ -155,6 +173,10 @@
       .catch(error => {
         console.error('Error fetching instructors:', error);
         container.innerHTML = '<p class="text-danger text-center">Failed to load instructors. Please try again later.</p>';
+      })
+      .finally(() => {
+        // Hide spinner
+        spinner.style.display = "none";
       });
   });
 </script>
