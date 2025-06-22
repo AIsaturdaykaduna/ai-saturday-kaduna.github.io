@@ -63,27 +63,28 @@
   </style>
 </head>
 <body>
- <!-- Navbar -->
+
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">AI Saturday Kaduna</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-          <li class="nav-item"><a class="nav-link active" href="resources.html">Resources</a></li>
-          <li class="nav-item"><a class="nav-link" href="classes.html">Classes</a></li>
-          <li class="nav-item"><a class="nav-link" href="instructors.html">Instructor</a></li>
-          <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
-          <li class="nav-item"><a class="nav-link btn btn-orange text-white ms-3" href="login.html">Login</a></li>
-        </ul>
-      </div>
+  <div class="container">
+    <a class="navbar-brand" href="#">AI Saturday Kaduna</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link active" href="resources.html">Resources</a></li>
+        <li class="nav-item"><a class="nav-link" href="classes.html">Classes</a></li>
+        <li class="nav-item"><a class="nav-link" href="instructors.html">Instructor</a></li>
+        <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link btn btn-orange text-white ms-3" href="login.html">Login</a></li>
+      </ul>
     </div>
-  </nav>
-  
+  </div>
+</nav>
+
 <!-- Hero -->
 <header class="bg-dark text-white text-center py-5">
   <div class="container">
@@ -96,71 +97,8 @@
 <section class="py-5">
   <div class="container">
     <h2 class="section-title text-center">Core Leads</h2>
-    <div class="row g-4">
-
-      <!-- Instructor 1 -->
-      <div class="col-md-4">
-        <div class="card card-instructor">
-          <img src="https://i.pravatar.cc/300?img=12" alt="Instructor 1">
-          <div class="card-body">
-            <h5>Abdurrashid Sani</h5>
-            <p class="text-muted">AI Instructor & Software Developer</p>
-            <p>Focused on making AI accessible across communities with practical hands-on teaching.</p>
-            <div class="contact-info mb-2">
-              <p><i class="bi bi-telephone-fill"></i> +234 803 123 4567</p>
-              <p><i class="bi bi-envelope-fill"></i> sani@aisaturdaykaduna.org</p>
-            </div>
-            <div class="social-icons">
-              <a href="#"><i class="bi bi-github"></i></a>
-              <a href="#"><i class="bi bi-twitter"></i></a>
-              <a href="#"><i class="bi bi-linkedin"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Instructor 2 -->
-      <div class="col-md-4">
-        <div class="card card-instructor">
-          <img src="https://i.pravatar.cc/300?img=14" alt="Instructor 2">
-          <div class="card-body">
-            <h5>Zainab Musa</h5>
-            <p class="text-muted">Data Scientist & Mentor</p>
-            <p>Specializes in turning raw data into insights and loves mentoring beginner AI learners.</p>
-            <div class="contact-info mb-2">
-              <p><i class="bi bi-telephone-fill"></i> +234 701 555 8888</p>
-              <p><i class="bi bi-envelope-fill"></i> zainab@aisaturdaykaduna.org</p>
-            </div>
-            <div class="social-icons">
-              <a href="#"><i class="bi bi-linkedin"></i></a>
-              <a href="#"><i class="bi bi-twitter-x"></i></a>
-              <a href="#"><i class="bi bi-instagram"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Instructor 3 -->
-      <div class="col-md-4">
-        <div class="card card-instructor">
-          <img src="https://i.pravatar.cc/300?img=22" alt="Instructor 3">
-          <div class="card-body">
-            <h5>Muhammad Bello</h5>
-            <p class="text-muted">Machine Learning Engineer</p>
-            <p>Builds intelligent systems and helps students implement models from scratch.</p>
-            <div class="contact-info mb-2">
-              <p><i class="bi bi-telephone-fill"></i> +234 802 987 6543</p>
-              <p><i class="bi bi-envelope-fill"></i> bello@aisaturdaykaduna.org</p>
-            </div>
-            <div class="social-icons">
-              <a href="#"><i class="bi bi-github"></i></a>
-              <a href="#"><i class="bi bi-linkedin"></i></a>
-              <a href="#"><i class="bi bi-facebook"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="row g-4" id="instructors-container">
+      <!-- Instructors will be inserted here dynamically -->
     </div>
   </div>
 </section>
@@ -176,6 +114,49 @@
   </div>
 </footer>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const container = document.getElementById("instructors-container");
+
+    axios.get('/api/instructors.php')
+      .then(response => {
+        const instructors = response.data;
+
+        instructors.forEach(instructor => {
+          const fullName = `${instructor.first_name} ${instructor.last_name}`;
+          const image = instructor.profile_picture || `https://i.pravatar.cc/300?u=${instructor.id}`;
+          const card = `
+            <div class="col-md-4">
+              <div class="card card-instructor">
+                <img src="${image}" alt="${fullName}">
+                <div class="card-body">
+                  <h5>${fullName}</h5>
+                  <p class="text-muted">Instructor</p>
+                  <p>Passionate about AI and empowering the community through knowledge sharing.</p>
+                  <div class="contact-info mb-2">
+                    <p><i class="bi bi-telephone-fill"></i> ${instructor.phone || "N/A"}</p>
+                    <p><i class="bi bi-envelope-fill"></i> ${instructor.email}</p>
+                  </div>
+                  <div class="social-icons">
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-twitter"></i></a>
+                    <a href="#"><i class="bi bi-github"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          container.insertAdjacentHTML('beforeend', card);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching instructors:', error);
+        container.innerHTML = '<p class="text-danger text-center">Failed to load instructors. Please try again later.</p>';
+      });
+  });
+</script>
 </body>
 </html>
