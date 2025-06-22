@@ -1,11 +1,14 @@
+<!-- Full updated HTML with Password and Confirm Password fields with show/hide functionality and SweetAlert integration -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Saturday Kaduna</title>
+  <title>Join AI Saturdays Kaduna</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
     :root {
       --orange: #ff6600;
@@ -13,233 +16,208 @@
       --light-bg: #f8f9fa;
     }
     body {
-      font-family: 'Segoe UI', sans-serif;
       background-color: var(--light-bg);
+      font-family: 'Segoe UI', sans-serif;
     }
-    .navbar-brand {
+    .form-section {
+      max-width: 850px;
+      margin: 60px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      color: var(--dark-blue);
       font-weight: bold;
-      color: var(--orange) !important;
-    }
-    .nav-link {
-      font-weight: 500;
-    }
-    .hero {
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-        url('bg.jpeg') no-repeat center center/cover;
-      color: white;
-      text-align: center;
-      padding: 150px 20px 100px;
     }
     .btn-orange {
       background-color: var(--orange);
       color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 6px;
+      font-weight: 600;
     }
     .btn-orange:hover {
       background-color: #e65c00;
     }
-    .section-dark {
-      background-color: var(--dark-blue);
-      color: white;
-      padding: 80px 20px;
+    label.required::after {
+      content: "*";
+      color: red;
+      margin-left: 4px;
     }
-    .section-light {
-      background-color: var(--light-bg);
-      padding: 80px 20px;
-    }
-    .section-title {
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 40px;
-    }
-    .instructor img, .testimonial img {
-      border-radius: 50%;
-    }
-    .testimonial img {
-      width: 60px;
-    }
-    .instructor img {
-      width: 120px;
-    }
-    .countdown {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .feature-icon {
-      font-size: 2.5rem;
-      color: var(--orange);
-      margin-bottom: 10px;
-    }
-    .card-custom {
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    /* Upcoming class clip card */
-    .clip-card {
+    .profile-wrapper {
       position: relative;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
-      max-width: 400px;
-      float: right;
-      margin: 0 0 20px 20px;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 30px;
     }
-    @media (max-width: 768px) {
-      .clip-card {
-        float: none;
-        clip-path: none;
-        max-width: 100%;
-      }
+    .profile-wrapper img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--orange);
+    }
+    .camera-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      margin: auto;
+      text-align: center;
+      width: 40px;
+      height: 40px;
+      background: var(--orange);
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .profile-wrapper input[type="file"] {
+      display: none;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+<div class="container form-section">
+  <h1 class="mb-4 text-center">Join AI Saturdays Kaduna</h1>
+  <div class="profile-wrapper">
+    <img id="profilePreview" src="user.jpg" alt="Profile Picture">
+    <label for="profileInput" class="camera-icon">
+      <i class="bi bi-camera-fill"></i>
+      <input type="file" id="profileInput" accept="image/*">
+    </label>
+  </div>
+  <form id="registrationForm" novalidate>
+    <div class="row g-3">
+      <!-- Existing Fields ... -->
 
- <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">AI Saturday Kaduna</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-          <li class="nav-item"><a class="nav-link active" href="resources.html">Resources</a></li>
-          <li class="nav-item"><a class="nav-link" href="classes.html">Classes</a></li>
-          <li class="nav-item"><a class="nav-link" href="instructors.html">Instructor</a></li>
-          <li class="nav-item"><a class="nav-link" href="reviews.html">Reviews</a></li>
-          <li class="nav-item"><a class="nav-link btn btn-orange text-white ms-3" href="login.html">Login</a></li>
-        </ul>
+      <div class="col-md-6 position-relative">
+        <label class="form-label required" for="password">Password</label>
+        <input type="password" class="form-control" id="password" required placeholder="Create a password">
+        <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('password', this)"></i>
+        <div class="invalid-feedback">Password is required.</div>
+      </div>
+      <div class="col-md-6 position-relative">
+        <label class="form-label required" for="confirmPassword">Confirm Password</label>
+        <input type="password" class="form-control" id="confirmPassword" required placeholder="Confirm your password">
+        <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('confirmPassword', this)"></i>
+        <div class="invalid-feedback">Please confirm your password.</div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12 mt-4 text-center">
+        <button type="submit" class="btn btn-orange btn-lg px-5">Submit Application</button>
       </div>
     </div>
-  </nav>
-  
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Learn AI Hands-on in Kaduna</h1>
-      <p class="lead">Join our AI Saturday classes to master Python, Machine Learning, and Data Science through real-world projects.</p>
-      <a href="register.html" class="btn btn-orange btn-lg mt-3">Join the Community Now</a>
-    </div>
-  </section>
+  </form>
+</div>
 
- 
+<script>
+  function togglePassword(id, icon) {
+    const input = document.getElementById(id);
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('bi-eye-slash');
+      icon.classList.add('bi-eye');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('bi-eye');
+      icon.classList.add('bi-eye-slash');
+    }
+  }
 
-  <!-- Features Section -->
-  <section id="features" class="section-dark text-center">
-    <div class="container">
-      <h2 class="section-title text-white">What You'll Learn</h2>
-      <div class="row g-4">
-        <div class="col-md-3">
-          <i class="bi bi-code-slash feature-icon"></i>
-          <h5>Python Programming</h5>
-          <p>Build strong foundations in Python for data and AI development.</p>
-        </div>
-        <div class="col-md-3">
-          <i class="bi bi-graph-up feature-icon"></i>
-          <h5>Data Science</h5>
-          <p>Explore data analysis, visualization, and storytelling with real datasets.</p>
-        </div>
-        <div class="col-md-3">
-          <i class="bi bi-cpu feature-icon"></i>
-          <h5>Machine Learning</h5>
-          <p>Learn how to train AI models and apply them to real-world challenges.</p>
-        </div>
-        <div class="col-md-3">
-          <i class="bi bi-people feature-icon"></i>
-          <h5>Team Projects</h5>
-          <p>Collaborate on meaningful projects that create impact in your community.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  const form = document.getElementById('registrationForm');
+  const hasSkills = document.getElementById('hasSkills');
+  const skillLevelGroup = document.getElementById('skillLevelGroup');
+  const skillLevel = document.getElementById('skillLevel');
+  const rulesYes = document.getElementById('rulesYes');
+  const rulesFeedback = document.getElementById('rulesFeedback');
+  const profileInput = document.getElementById('profileInput');
+  const profilePreview = document.getElementById('profilePreview');
+  const submitButton = form.querySelector('button[type="submit"]');
 
-  <!-- Class Info -->
-  <section id="class" class="section-light">
-    <div class="container">
-      <h2 class="section-title text-center">Upcoming Class</h2>
-      <div class="clip-card">
-        <p><i class="bi bi-calendar-event"></i> <strong>August 10, 2024</strong></p>
-        <p><i class="bi bi-clock"></i> <strong>10:00 AM</strong></p>
-        <p><i class="bi bi-geo-alt"></i> Kaduna Innovation Hub</p>
-        <p><i class="bi bi-laptop"></i> Bring your laptop and notebook</p>
-        <div class="countdown mt-4" id="countdown"></div>
-      </div>
-    </div>
-  </section>
+  hasSkills.addEventListener('change', () => {
+    skillLevelGroup.style.display = hasSkills.value === 'yes' ? 'block' : 'none';
+    hasSkills.value === 'yes' ? skillLevel.setAttribute('required', 'required') : skillLevel.removeAttribute('required');
+  });
 
-  <!-- Instructor & Testimonials -->
-  <section class="section-light">
-    <div class="container">
-      <h2 class="section-title text-center">Instructors and Students</h2>
-      <div class="row text-center">
-        <div class="col-md-6 instructor mb-5" id="instructor">
-          <h3>Instructor</h3>
-          <img src="https://i.pravatar.cc/150?img=12" alt="Instructor" />
-          <h5 class="mt-3">Abdurrashid Sani</h5>
-          <p class="mb-0">I'm a software developer and AI educator passionate about making tech accessible in Nigeria.</p>
-        </div>
-        <div class="col-md-6" id="testimonials">
-          <h3>Students</h3>
-          <div class="testimonial d-flex align-items-center mb-3">
-            <img src="https://i.pravatar.cc/150?img=3" alt="Abubakar" class="me-3">
-            <div>
-              <strong>Abubakar</strong><br/>
-              <small>An invaluable experience</small>
-            </div>
-          </div>
-          <div class="testimonial d-flex align-items-center">
-            <img src="https://i.pravatar.cc/150?img=5" alt="Maryam" class="me-3">
-            <div>
-              <strong>Maryam</strong><br/>
-              <small>Meaningful community impact</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  profileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        profilePreview.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white text-center p-4">
-    <p>© 2024 AI Saturday Kaduna. All rights reserved.</p>
-    <p>
-      <a href="https://github.com/ai-saturday-kaduna" class="text-white text-decoration-none">GitHub</a> |
-      <a href="#register" class="text-white text-decoration-none">Contact</a>
-    </p>
-  </footer>
+  form.addEventListener('submit', async function (event) {
+    if (!form.checkValidity() || !rulesYes.checked) {
+      event.preventDefault();
+      event.stopPropagation();
+      rulesFeedback.style.display = !rulesYes.checked ? 'block' : 'none';
+    } else {
+      event.preventDefault();
 
-  <!-- Countdown Script -->
-  <script>
-    const eventDate = new Date("August 10, 2024 10:00:00").getTime();
-    const countdown = document.getElementById("countdown");
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
-    setInterval(() => {
-      const now = new Date().getTime();
-      const diff = eventDate - now;
-
-      if (diff <= 0) {
-        countdown.innerHTML = "Class is live!";
+      if (password !== confirmPassword) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Password Mismatch',
+          text: 'Password and Confirm Password must match!',
+          confirmButtonColor: '#ff6600'
+        });
         return;
       }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const originalText = submitButton.innerHTML;
+      submitButton.innerHTML = 'Submitting... Please wait';
+      submitButton.disabled = true;
 
-      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }, 1000);
-  </script>
+      const formData = new FormData(form);
+      formData.append('rules', rulesYes.checked ? 'yes' : 'no');
+      if (profileInput.files[0]) formData.append('profilePicture', profileInput.files[0]);
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      try {
+        const res = await axios.post('https://riyawacontractors.com/AI-Saturdays/register.php', formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: res.data.message || 'Application submitted successfully!',
+          confirmButtonColor: '#ff6600'
+        });
+        form.reset();
+        profilePreview.src = 'user.jpg';
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Submission Failed',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonColor: '#ff6600'
+        });
+      } finally {
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+      }
+    }
+    form.classList.add('was-validated');
+  });
+</script>
 </body>
 </html>
