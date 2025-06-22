@@ -128,45 +128,12 @@
 <!-- Resource Cards -->
 <section class="py-5">
   <div class="container">
-    <div class="row" id="resource-list">
-
-      <div class="col-md-4 mb-4 resource-card" data-category="python">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body text-center">
-            <i class="bi bi-filetype-py card-icon"></i>
-            <span class="badge-category">Python</span>
-            <h5 class="card-title mt-2">Intro to Python</h5>
-            <p class="card-text">Basic syntax, variables, loops, and functions.</p>
-            <a href="resources/intro_python.pdf" class="btn btn-orange" download><i class="bi bi-download me-1"></i>Download</a>
-          </div>
-        </div>
+    <div class="text-center" id="loading">
+      <div class="spinner-border text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
-
-      <div class="col-md-4 mb-4 resource-card" data-category="ml">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body text-center">
-            <i class="bi bi-cpu card-icon"></i>
-            <span class="badge-category">Machine Learning</span>
-            <h5 class="card-title mt-2">ML Algorithms</h5>
-            <p class="card-text">Supervised and unsupervised learning overview.</p>
-            <a href="resources/ml_algorithms.pdf" class="btn btn-orange" download><i class="bi bi-download me-1"></i>Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 mb-4 resource-card" data-category="data">
-        <div class="card h-100 shadow-sm border-0">
-          <div class="card-body text-center">
-            <i class="bi bi-bar-chart-line card-icon"></i>
-            <span class="badge-category">Data Science</span>
-            <h5 class="card-title mt-2">Data Visualization</h5>
-            <p class="card-text">Plotting with matplotlib and seaborn.</p>
-            <a href="resources/data_viz.pdf" class="btn btn-orange" download><i class="bi bi-download me-1"></i>Download</a>
-          </div>
-        </div>
-      </div>
-
     </div>
+    <div class="row" id="resource-list" style="display: none;"></div>
   </div>
 </section>
 
@@ -180,6 +147,67 @@
     </p>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  function filterResources(category) {
+    const cards = document.querySelectorAll('.resource-card');
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  function formatCategory(cat) {
+    switch (cat) {
+      case 'python': return 'Python';
+      case 'ml': return 'Machine Learning';
+      case 'data': return 'Data Science';
+      default: return cat;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const resourceList = document.getElementById('resource-list');
+    const loading = document.getElementById('loading');
+
+    axios.get('https://riyawacontractors.com/AI-Saturdays/resources.php')
+      .then(response => {
+        const data = response.data;
+        if (Array.isArray(data)) {
+          data.forEach(resource => {
+            const card = document.createElement('div');
+            card.className = 'col-md-4 mb-4 resource-card';
+            card.dataset.category = resource.category;
+
+            card.innerHTML = `
+              <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                  <i class="bi ${resource.icon_class} card-icon"></i>
+                  <span class="badge-category">${formatCategory(resource.category)}</span>
+                  <h5 class="card-title mt-2">${resource.title}</h5>
+                  <p class="card-text">${resource.description}</p>
+                  <a href="${resource.file_path}" class="btn btn-orange" download>
+                    <i class="bi bi-download me-1"></i>Download
+                  </a>
+                </div>
+              </div>
+            `;
+            resourceList.appendChild(card);
+          });
+        }
+        loading.style.display = 'none';
+        resourceList.style.display = 'flex';
+        resourceList.classList.add('flex-wrap');
+      })
+      .catch(error => {
+        loading.innerHTML = `<p class="text-danger">Failed to load resources. Please try again later.</p>`;
+        console.error(error);
+      });
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
