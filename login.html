@@ -44,6 +44,18 @@
     .form-group {
       position: relative;
     }
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 500;
+      color: #0d1b2a;
+      text-decoration: none;
+    }
+    .back-home:hover {
+      color: #ff6600;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -65,10 +77,13 @@
       <button type="submit" class="btn btn-orange w-100">Login</button>
     </div>
   </form>
+
+  <!-- Back to Home -->
+  <a href="index.html" class="back-home"><i class="bi bi-arrow-left-circle me-1"></i>Back to Home</a>
 </div>
 
 <script>
-  // Show/hide password
+  // Toggle password visibility
   const togglePassword = document.getElementById('togglePassword');
   const passwordField = document.getElementById('password');
 
@@ -93,7 +108,6 @@
     const email = document.getElementById('email').value.trim();
     const password = passwordField.value.trim();
 
-    // Disable button
     submitBtn.disabled = true;
     submitBtn.textContent = 'Logging in...';
 
