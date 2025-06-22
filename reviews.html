@@ -90,64 +90,49 @@
   </section>
 
   <!-- Reviews Section -->
-  <section class="py-5">
-    <div class="container">
-      <h2 class="section-title text-center">Student & Community Reviews</h2>
-      <div class="row g-4">
-
-        <!-- Review 1 -->
-        <div class="col-md-4">
-          <div class="testimonial-card text-center">
-            <img src="https://i.pravatar.cc/150?img=5" alt="Maryam">
-            <h5>Maryam Yusuf</h5>
-            <small class="text-muted">Student</small>
-            <p class="quote mt-3">“AI Saturday Kaduna opened my eyes to new possibilities. The hands-on sessions were life-changing.”</p>
-          </div>
-        </div>
-
-        <!-- Review 2 -->
-        <div class="col-md-4">
-          <div class="testimonial-card text-center">
-            <img src="https://i.pravatar.cc/150?img=7" alt="Abubakar">
-            <h5>Abubakar Musa</h5>
-            <small class="text-muted">Aspiring Data Scientist</small>
-            <p class="quote mt-3">“The instructors are amazing. The projects gave me real experience that I now use in freelance jobs.”</p>
-          </div>
-        </div>
-
-        <!-- Review 3 -->
-        <div class="col-md-4">
-          <div class="testimonial-card text-center">
-            <img src="https://i.pravatar.cc/150?img=9" alt="Mrs. Rahma">
-            <h5>Mrs. Rahma Lawal</h5>
-            <small class="text-muted">Community Leader</small>
-            <p class="quote mt-3">“I’ve seen many youths grow confident and job-ready through AI Saturdays. It's a program every community needs.”</p>
-          </div>
-        </div>
-
-        <!-- Review 4 -->
-        <div class="col-md-4">
-          <div class="testimonial-card text-center">
-            <img src="https://i.pravatar.cc/150?img=16" alt="Fatima">
-            <h5>Fatima Danladi</h5>
-            <small class="text-muted">Beginner in Tech</small>
-            <p class="quote mt-3">“I had zero knowledge of coding. Now I can build models and tell data stories!”</p>
-          </div>
-        </div>
-
-        <!-- Review 5 -->
-        <div class="col-md-4">
-          <div class="testimonial-card text-center">
-            <img src="https://i.pravatar.cc/150?img=11" alt="Samuel">
-            <h5>Samuel Okeke</h5>
-            <small class="text-muted">Volunteer Mentor</small>
-            <p class="quote mt-3">“Teaching here has been a rewarding experience. I love how inclusive and practical every session is.”</p>
-          </div>
-        </div>
-
-      </div>
+ 
+   <!-- Reviews Section -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title text-center">Student & Community Reviews</h2>
+    <div class="row g-4" id="reviews-container">
+      <!-- Reviews will be loaded here -->
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- Axios CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- Load Reviews from API -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("reviews-container");
+
+    axios.get("https://yourdomain.com/api/get_reviews.php")
+      .then(response => {
+        const reviews = response.data;
+
+        reviews.forEach(review => {
+          const card = `
+            <div class="col-md-4">
+              <div class="testimonial-card text-center">
+                <img src="${review.image_url || 'https://i.pravatar.cc/150'}" alt="${review.name}">
+                <h5>${review.name}</h5>
+                <small class="text-muted">${review.role || ''}</small>
+                <p class="quote mt-3">“${review.review}”</p>
+              </div>
+            </div>
+          `;
+          container.insertAdjacentHTML("beforeend", card);
+        });
+      })
+      .catch(error => {
+        console.error("Error loading reviews:", error);
+        container.innerHTML = '<p class="text-danger text-center">Failed to load reviews.</p>';
+      });
+  });
+</script>
 
   <!-- Footer -->
   <footer class="text-white text-center">
